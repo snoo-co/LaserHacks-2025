@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Irvine Valley College Transferable Courses</title>
+  <!-- 
+    Inline CSS for demonstration. 
+    You can move this to a separate CSS file and reference with <link rel="stylesheet" href="styles.css" />
+  -->
+  <style>
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* Header / navbar container */
+    header {
+      background-color: #2f4e85; /* Dark Blue (adjust as needed) */
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+
+    /* Left part of header (title) */
+    .header-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    /* Right part of header (About link) */
+    .header-about {
+      font-size: 1rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .header-about:hover {
+      text-decoration: underline;
+    }
+
+    /* Main container for the page content */
+    main {
+      padding: 1rem;
+    }
+
+    /* Form controls container */
+    .selection-container {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 1rem;
+    }
+
+    .selection-group {
+      display: flex;
+      flex-direction: column;
+      width: 40%;
+    }
+
+    .selection-group label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .selection-group input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    table{
+      width:100%;
+      border: solid white;
+      border-collapse: collapse;
+      background-color: #e0e7f1; /* Light grayish-blue background to mimic your example */
+    }
+    th{
+      text-align: center;
+      border: solid white;
+      border-radius: 4px;
+      
+      margin-bottom: 1rem;
+      padding: 1rem;
+    }
+    td{
+      padding: 1rem;
+      min-height: 400px; /* Just to give it some height */
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header>
+    <!-- Left side: Title -->
+    <div class="header-title">Irvine Valley College Transferable Courses</div>
+
+    <!-- Right side: "About" Link -->
+    <a href="#" class="header-about">About</a>
+  </header>
+
+  <!-- Main content area -->
+  <main>
+    <!-- Container for University / Major selection -->
+    <div class="selection-container">
+      <!-- University selection group -->
+      <div class="selection-group">
+        <label for="universityInput">Select University:</label>
+        <!-- 
+          You can use a simple input or a datalist/select element.
+          In the future, you'll populate this from the assist.org API.
+        -->
+        <input 
+          type="text" 
+          disabled="disabled"
+          id="universityInput" 
+          placeholder="Type or select a university..."
+          list="universitiesList" 
+          value="{{uc_name}}"
+        />
+        <datalist id="universitiesList">
+          <!-- These are placeholder options. We will fetch from API eventually. -->
+          <option value="UC Irvine"></option>
+          <option value="UCLA"></option>
+          <option value="Cal State Fullerton"></option>
+        </datalist>
+      </div>
+
+      <!-- Major selection group -->
+      <div class="selection-group">
+        <label for="majorInput">Select Major:</label>
+        <!-- 
+          Same idea as with the university. Could be a simple <select> or <input + datalist>.
+        -->
+        <input 
+          type="text"
+          disabled="disabled" 
+          id="majorInput" 
+          placeholder="Type or select a major..." 
+          list="majorsList" 
+          value="{{major}}"
+        />
+        <datalist id="majorsList">
+          <!-- Placeholder options. To be dynamically filled from API. -->
+          <option value="Computer Science"></option>
+          <option value="Mathematics"></option>
+          <option value="Biology"></option>
+        </datalist>
+      </div>
+    </div>
+
+    <!-- Container with two columns: Required Courses and Transferable Courses -->
+
+    <table id=offeredCourses>
+      <thead>
+        <tr>
+          <th colspan="2" style="border-bottom-width: 5px;">Courses Available at IVC</th>
+        </tr>
+
+        <tr class="courses-column">
+          <th>Courses required</th>
+          <th>Courses at IVC</th>
+        </tr>
+       </thead>
+       <tbody>
+        {% for uc_course, ivc_course in ivc_courses.items() %}
+          <tr>
+              <td><h3> {{ uc_course }} </h3></td>
+              <td><h3> {{ ivc_course }} </h3></td>
+          </tr>
+        {% endfor %}
+       </tbody>
+    </table>
+
+    <table id="notOfferedCourses">
+      <thead>
+        <tr>
+          <th colspan="3">Courses that cannot be articulated at IVC</th>
+        </tr>
+        <tr>
+          <th>Courses required</th>
+          <th colspan="2">Courses to be taken at other colleges</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for uc_course, other_courses in result.items() %}
+            <tr>
+                <td><h3> {{ uc_course }} </h3></td>
+            </tr>
+            {% for other_course in other_courses %}
+                <tr>
+                  {% for other_course, college in other_course.items() %}
+                    <td> {{ other_course }} </td>
+                    <td> {{ college }} </td>
+                  {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+   
+  </main>
+</body>
+</html>

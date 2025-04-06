@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Irvine Valley College Transferable Courses</title>
+  <style>
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* Header / navbar container */
+    header {
+      background-color: #2f4e85; /* Dark Blue */
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+
+    /* Left part of header (title) */
+    .header-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    /* Right part of header (About link) */
+    .header-about {
+      font-size: 1rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .header-about:hover {
+      text-decoration: underline;
+    }
+
+    /* Main container for the page content */
+    main {
+      padding: 1rem;
+    }
+
+    /* Form styles */
+    form#searchForm {
+      margin-bottom: 1rem;
+    }
+
+    /* Flex container for the selection groups and button */
+    .selection-container {
+      display: flex;
+      align-items: flex-end; /* Align items by their bottom edge */
+      gap: 1rem;
+    }
+
+    .selection-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .selection-group label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .selection-group input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* Style for the Search button */
+    button[type="submit"] {
+      padding: 0.5rem 1rem;
+      background-color: #2f4e85;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button[type="submit"]:hover {
+      background-color: #233d64;
+    }
+
+    /* Table styles */
+    table {
+      width: 100%;
+      border: solid white;
+      border-collapse: collapse;
+      background-color: #e0e7f1;
+      margin-top: 1rem;
+    }
+    th {
+      text-align: center;
+      border: solid white;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+    }
+    td {
+      padding: 1rem;
+      min-height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header>
+    <div class="header-title">Irvine Valley College Transferable Courses</div>
+    <a href="#" class="header-about">About</a>
+  </header>
+
+  <!-- Main content area -->
+  <main>
+    <!-- Form wrapping the selection groups and the Search button -->
+    <form id="searchForm" action="" method="post">
+      <div class="selection-container">
+        <!-- University selection group -->
+        <div class="selection-group">
+          <label for="universityInput">Select University:</label>
+          <input 
+            type="text" 
+            id="universityInput" 
+            placeholder="Type or select a university..."
+            list="universitiesList" 
+            name="uc_name"
+            autocomplete="off"
+          />
+          <datalist id="universitiesList" name="uc_name">
+          </datalist>
+        </div>
+        <!-- Search button group (with hidden label for spacing) -->
+        <div class="selection-group">
+          <label style="visibility: hidden;">Go</label>
+          <button type="submit">Go</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Table for courses available at IVC -->
+    <table id="offeredCourses">
+      <thead>
+        <tr>
+          <th colspan="2" style="border-bottom-width: 5px;">Courses Available at IVC</th>
+        </tr>
+        <tr class="courses-column">
+          <th>Courses required</th>
+          <th>Courses at IVC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here -->
+      </tbody>
+    </table>
+
+    <!-- Table for courses not transferable to IVC -->
+    <table id="notOfferedCourses">
+      <thead>
+        <tr>
+          <th colspan="3">Courses that cannot be articulated at IVC</th>
+        </tr>
+        <tr>
+          <th>Courses required</th>
+          <th colspan="2">Courses to be taken at other colleges</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- JavaScript placed at the bottom of the body for best performance -->
+  <script>
+    const CCC_NUMS = {"2":"Evergreen Valley College","3":"Los Angeles City College","4":"College of Marin","5":"College of San Mateo","6":"College of the Sequoias","8":"Butte College","9":"Cerro Coso Community College","10":"Columbia College","13":"Merritt College","14":"Rancho Santiago College","16":"Cuesta College","17":"Merced College","18":"Las Positas College","20":"Barstow Community College","25":"Los Angeles Trade Technical College","27":"American River College","28":"Contra Costa College","30":"College of the Desert","31":"Los Angeles Harbor College","32":"Mission College","33":"City College of San Francisco","35":"Fresno City College","36":"Kings River College","38":"Shasta College","40":"Lake Tahoe Community College","41":"Cabrillo College","43":"Glendale Community College","44":"Los Angeles Valley College","45":"San Diego Miramar College","47":"Los Angeles Mission College","48":"Ohlone College","49":"Pasadena City College","51":"Foothill College","52":"Modesto Junior College","53":"Mt. San Jacinto College","54":"San Diego City College","55":"Golden West College","56":"Palomar College","57":"Santa Rosa Junior College","58":"Vista Community College","61":"Los Medanos College","62":"Mount San Antonio College","63":"Palo Verde College","64":"Rio Hondo College","65":"Saddleback College","66":"Santiago Canyon College","67":"West Hills College Coalinga","68":"Canada College","69":"Chaffey College","70":"Crafton Hills College","71":"Cypress College","72":"Gavilan College","73":"Napa Valley College","74":"Orange Coast College","77":"Laney College","78":"Riverside City College","80":"West Valley College","82":"Lassen Community College","83":"College of the Redwoods","84":"Bakersfield College","86":"Los Angeles Pierce College","87":"Oxnard College","90":"Yuba College","91":"West Los Angeles College","92":"Santa Barbara City College","93":"Sierra College","94":"Solano Community College","95":"Ventura College","96":"Chabot College","97":"Citrus College","99":"Cuyamaca College","100":"Mendocino College","101":"San Diego Mesa College","102":"College of the Siskiyous","103":"El Camino College","104":"Cerritos College","105":"Coastline Community College","106":"Grossmont College","107":"Imperial Valley College","108":"MiraCosta College","109":"San Joaquin Delta College","110":"Allan Hancock College","111":"College of Alameda","112":"Copper Mountain College","113":"De Anza College","114":"Diablo Valley College","118":"East Los Angeles College","119":"Taft College","121":"Antelope Valley College","122":"Feather River College","123":"Hartnell College","124":"Irvine Valley College","125":"Porterville College","126":"Sacramento City College","127":"Skyline College","130":"Los Angeles Southwest College","131":"San Bernardino Valley College","133":"Monterey Peninsula College","134":"Fullerton College","135":"Long Beach City College","136":"San Jose City College","137":"Santa Monica College","138":"Southwestern College","139":"Moorpark College","140":"College of the Canyons","142":"Cosumnes River College","145":"Folsom Lake College","146":"West Hills College Lemoore","147":"Woodland Community College","148":"Norco College","149":"Moreno Valley College","150":"Clovis Community College","153":"Compton College","200":"Madera Community College"}
+    const UC_NUMS = {"UC Berkeley": 79, "UC Davis": 89, "UC Irvine": 120, "UC Los Angeles": 117, "UC Merced": 144, "UC Riverside": 46, "UC San Diego": 7, "UC Santa Barbara": 128, "UC Santa Cruz": 132}
+    const uc_codes = {"ucb": "UC Berkeley", "ucd": "UC Davis", "uci": "UC Irvine", "ucla": "UC Los Angeles", "ucm": "UC Merced", "ucr": "UC Riverside", "ucsd": "UC San Diego", "ucsb": "UC Santa Barbara", "ucsc": "UC Santa Cruz"}
+
+    // Get references to input elements and the form
+    const universityInput = document.getElementById('universityInput');
+    const majorInput = document.getElementById('majorInput');
+    const searchForm = document.getElementById('searchForm');
+    propogateUniversity();
+    universityInput.addEventListener('input', function(event) {
+      //not done yet, i want to make it such that it enables select major after the university is actually in the list of valid universities
+      event.preventDefault(); // Prevent page reload
+      enableMajor();
+    });
+    
+    
+
+    /* def select_uc():
+    """
+    Pick UC to transfer to. Runs in terminal. Needs to be converted to website. 
+    """
+    while True:
+        uc_name = input("Where do you want to transfer?: ").strip()
+        if uc_name.lower() in uc_codes.keys():
+            uc_name = uc_codes[uc_name]
+            break
+        else:
+            print(f"{uc_name} is not a valid UC code. Try UCLA, UCI, UCSC, etc.")
+    
+    return uc_name 
+    
+    
+    */
+
+
+    // // Attach submit event listener to the form
+    // searchForm.addEventListener('submit', function(event) {
+    //   event.preventDefault(); // Prevent page reload
+    //   handleSelectionChange();
+    // });
+
+    /**
+     * This function is called when the form is submitted.
+     * It fetches course data based on the selected university and major.
+     */
+
+    function propogateUniversity(){
+      const universitiesList = document.getElementById('universitiesList');
+      }
+      for(universities in UC_NUMS){
+        let newOption=document.createElement('option');
+        newOption.setAttribute('value', universities);
+        universitiesList.appendChild(newOption)
+      }
+
+
+    function enableMajor(){
+      majorInput.removeAttribute('disabled');
+    }
+
+    // function handleSelectionChange() {
+    //   const selectedUniversity = universityInput.value;
+    //   const selectedMajor = majorInput.value;
+
+    //   if (selectedUniversity && selectedMajor) {
+    //     // Clear out any existing data in the tables
+    //     let new_available_tbody = document.createElement('tbody');
+    //     let old_available_tbody = document.getElementById('offeredCourses').getElementsByTagName('tbody')[0];
+    //     old_available_tbody.parentNode.replaceChild(new_available_tbody, old_available_tbody);
+
+    //     let new_n_available_tbody = document.createElement('tbody');
+    //     let old_n_available_tbody = document.getElementById('notOfferedCourses').getElementsByTagName('tbody')[0];
+    //     old_n_available_tbody.parentNode.replaceChild(new_n_available_tbody, old_n_available_tbody);
+
+    //     // Fetch data from the API (mock URL used here)
+    //     fetch("http://127.0.0.1:5000")
+    //       .then((response) => response.json())
+    //       .then((courses) => {
+    //         // courses[0] contains courses transferable to IVC
+    //         const transferable = courses[0];
+    //         for (const requiredCourses in transferable) {
+    //           const tbody = document.getElementById('offeredCourses').getElementsByTagName('tbody')[0];
+    //           const row = tbody.insertRow(-1);
+    //           const requiredCoursesCell = row.insertCell(0);
+    //           const transferableCoursesCell = row.insertCell(1);
+    //           requiredCoursesCell.innerHTML = requiredCourses;
+    //           transferableCoursesCell.innerHTML = transferable[requiredCourses];
+    //         }
+
+    //         // courses[1] contains courses not transferable to IVC
+    //         const notTransferable = courses[1];
+    //         for (const requiredCourses in notTransferable) {
+    //           const tbody = document.getElementById('notOfferedCourses').getElementsByTagName('tbody')[0];
+    //           const row = tbody.insertRow(-1);
+    //           const requiredCoursesCell = row.insertCell(0);
+    //           requiredCoursesCell.innerHTML = requiredCourses;
+
+    //           for (const _index in notTransferable[requiredCourses]) {
+    //             const index = notTransferable[requiredCourses][_index];
+    //             for (const courseAlternative in index) {
+    //               const alternativeCourseCell = row.insertCell(1);
+    //               alternativeCourseCell.innerHTML = courseAlternative;
+    //               const otherInstituteCell = row.insertCell(2);
+    //               otherInstituteCell.innerHTML = index[courseAlternative];
+    //             }
+    //           }
+    //         }
+    //       })
+    // //       .catch(err => console.error('Error fetching data:', err));
+    //   }
+    // }
+  </script>
+</body>
+</html>
+

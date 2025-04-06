@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Irvine Valley College Transferable Courses</title>
+  <style>
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* Header / navbar container */
+    header {
+      background-color: #2f4e85; /* Dark Blue */
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+
+    /* Left part of header (title) */
+    .header-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    /* Right part of header (About link) */
+    .header-about {
+      font-size: 1rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .header-about:hover {
+      text-decoration: underline;
+    }
+
+    /* Main container for the page content */
+    main {
+      padding: 1rem;
+    }
+
+    /* Form styles */
+    form#searchForm {
+      margin-bottom: 1rem;
+    }
+
+    /* Flex container for the selection groups and button */
+    .selection-container {
+      display: flex;
+      align-items: flex-end; /* Align items by their bottom edge */
+      gap: 1rem;
+    }
+
+    .selection-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .selection-group label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .selection-group input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* Style for the Search button */
+    button[type="submit"] {
+      padding: 0.5rem 1rem;
+      background-color: #2f4e85;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button[type="submit"]:hover {
+      background-color: #233d64;
+    }
+
+    /* Table styles */
+    table {
+      width: 100%;
+      border: solid white;
+      border-collapse: collapse;
+      background-color: #e0e7f1;
+      margin-top: 1rem;
+    }
+    th {
+      text-align: center;
+      border: solid white;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+    }
+    td {
+      padding: 1rem;
+      min-height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header>
+    <div class="header-title">Irvine Valley College Transferable Courses</div>
+    <a href="#" class="header-about">About</a>
+  </header>
+
+  <!-- Main content area -->
+  <main>
+    <!-- Form wrapping the selection groups and the Search button -->
+    <form id="searchForm" action="/search" method="post">
+      <div class="selection-container">
+        <!-- University selection group -->
+        <div class="selection-group">
+          <label for="universityInput">Select University:</label>
+          <input
+            disabled="disabled"
+            type="text" 
+            id="universityInput"
+            name="uc_name" 
+            value="{{uc_name}}" 
+            list="universitiesList"
+            autocomplete="off"
+          />
+          <datalist id="universitiesList">
+          </datalist>
+        </div>
+
+        <!-- Major selection group -->
+        <div class="selection-group">
+          <label for="majorInput">Select Major:</label>
+          <input
+            type="text" 
+            id="majorInput" 
+            placeholder="Type or select a major..." 
+            list="majorsList"
+            name="major_select"
+            autocomplete="off"
+          />
+          <datalist id="majorsList" name="major_select">
+            {% for major in all_majors.keys() %}
+            <option value="{{major}}" data-value="{{all_majors[major]}}">{{major}}</option>
+            {% endfor %}l
+          </datalist>
+        </div>
+
+        <!-- Search button group (with hidden label for spacing) -->
+        <div class="selection-group">
+          <label style="visibility: hidden;">Search</label>
+          <button type="submit">Search</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Table for courses available at IVC -->
+    <table id="offeredCourses">
+      <thead>
+        <tr>
+          <th colspan="2" style="border-bottom-width: 5px;">Courses Available at IVC</th>
+        </tr>
+        <tr class="courses-column">
+          <th>Courses required</th>
+          <th>Courses at IVC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here -->
+      </tbody>
+    </table>
+
+    <!-- Table for courses not transferable to IVC -->
+    <table id="notOfferedCourses">
+      <thead>
+        <tr>
+          <th colspan="3">Courses that cannot be articulated at IVC</th>
+        </tr>
+        <tr>
+          <th>Courses required</th>
+          <th colspan="2">Courses to be taken at other colleges</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here -->
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
+
